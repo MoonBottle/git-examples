@@ -1,4 +1,4 @@
-package com.bottle.myapp;
+package com.bottle.myapp.test01;
 
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.annotation.JsonIgnore;
