@@ -1,6 +1,7 @@
 package com.bottle.myapp.semaphore;
 
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 
 /**
@@ -9,12 +10,14 @@ import java.util.concurrent.Semaphore;
 public class TestCar {
 
     //停车场同时容纳的车辆10
-    private static Semaphore semaphore = new Semaphore(10);
+    private static Semaphore semaphore = new Semaphore(5);
 
     public static void main(String[] args) {
 
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
+
         //模拟100辆车进入停车场
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
 
             Thread thread = new Thread(new Runnable() {
                 public void run() {
@@ -23,6 +26,7 @@ public class TestCar {
                         if (semaphore.availablePermits() == 0) {
                             System.out.println("车位不足，请耐心等待");
                         }
+                        countDownLatch.await();
                         semaphore.acquire();//获取令牌尝试进入停车场
                         System.out.println(Thread.currentThread().getName() + "成功进入停车场");
                         Thread.sleep(new Random().nextInt(10000));//模拟车辆在停车场停留的时间
@@ -37,6 +41,8 @@ public class TestCar {
             thread.start();
 
         }
+
+        countDownLatch.countDown();
 
     }
 }
