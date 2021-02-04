@@ -1,4 +1,4 @@
-package com.bottle.myapp.goods;
+package com.bottle.examples.goods;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

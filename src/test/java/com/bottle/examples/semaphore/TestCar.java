@@ -1,4 +1,4 @@
-package com.bottle.myapp.semaphore;
+package com.bottle.examples.semaphore;
 
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;

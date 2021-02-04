@@ -1,4 +1,4 @@
-package com.bottle.myapp.goods;
+package com.bottle.examples.goods;
 
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;

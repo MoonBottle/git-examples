@@ -1,4 +1,4 @@
-package com.bottle.myapp.test01;
+package com.bottle.examples.test01;
 
 import java.math.BigDecimal;
 

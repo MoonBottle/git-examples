@@ -1,4 +1,4 @@
-package com.bottle.myapp.goods;
+package com.bottle.examples.goods;
 
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Component;
