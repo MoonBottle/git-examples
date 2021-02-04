@@ -68,7 +68,7 @@ public class ConditionTest {
         private final Condition condition = lock.newCondition();
 
         public void addTask(String s) {
-//            lock.lock();
+            lock.lock();
             try {
                 this.queue.add(s);
                 condition.signalAll();
