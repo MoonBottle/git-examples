@@ -1,9 +1,11 @@
 package com.bottle.examples;
 
+import lombok.SneakyThrows;
+
 /**
  * https://www.jianshu.com/p/fc51be7e5bc0
  */
-public class JoinDemo extends Thread {
+public class JoinDemo implements Runnable {
     int i;
     Thread previousThread; //上一个线程
 
@@ -12,6 +14,7 @@ public class JoinDemo extends Thread {
         this.i = i;
     }
 
+    @SneakyThrows
     @Override
     public void run() {
         try {
@@ -20,13 +23,15 @@ public class JoinDemo extends Thread {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        System.out.println(previousThread.getName() + " previousThread state :" + previousThread.getState());
+//        TimeUnit.HOURS.sleep(1);
         System.out.println("num:" + i);
     }
 
     public static void main(String[] args) {
         Thread previousThread = Thread.currentThread();
         for (int i = 0; i < 10; i++) {
-            JoinDemo joinDemo = new JoinDemo(previousThread, i);
+            Thread joinDemo = new Thread(new JoinDemo(previousThread, i), "线程" + i);
             joinDemo.start();
             previousThread = joinDemo;
         }
