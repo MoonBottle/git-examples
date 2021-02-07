@@ -5,57 +5,56 @@ import lombok.Data;
 import lombok.var;
 
 import java.util.Arrays;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * https://www.liaoxuefeng.com/wiki/1252599548343744/1306580911915042
- * 线程1可以调用addTask()不断往队列中添加任务；
- * 线程2可以调用getTask()从队列中获取任务。如果队列为空，则getTask()应该等待，直到队列中至少有一个任务时再返回。
- * 因此，多线程协调运行的原则就是：当条件不满足时，线程进入等待状态；当条件满足时，线程被唤醒，继续执行任务。
- * <p>
- * synchronized this 锁
+ *
  */
 public class ReadWriterLockTest {
 
     public static void main(String[] args) throws InterruptedException {
         var counter = new Counter();
-        var addThread = new Thread(() -> {
-            for (int i = 0; i < 10; i++) {
+
+        newWriteThread(counter, "写线程1");
+        newWriteThread(counter, "写线程2");
+        newWriteThread(counter, "写线程3");
+
+        newReadThread(counter, "读线程1");
+        newReadThread(counter, "读线程2");
+
+    }
+
+    private static void newWriteThread(Counter counter, String threadName) {
+        new Thread(() -> {
+            while (true) {
                 counter.inc();
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ignored) {
-                }
             }
-        });
-        addThread.start();
 
-        var t = new Thread() {
-            public void run() {
+        }, threadName).start();
+    }
+
+    private static void newReadThread(Counter counter, String threadName) {
+        new Thread(() -> {
+            while (true) {
                 int[] s = counter.get();
-                // 不加读锁会出现不一致的情况
-                while (s[0] != s[1]) {
-                    System.out.println(Arrays.toString(s));
-                    s = counter.get();
-                }
+                System.out.println(Thread.currentThread().getName() + "-读取到数据" + Arrays.toString(s));
             }
-        };
-        t.start();
-
+        }, threadName).start();
     }
 
     @Data
     @AllArgsConstructor
     static class Counter {
         private final int[] counts = new int[2];
-        private final ReadWriteLock lock = new ReentrantReadWriteLock();
-        private final Lock readLock = lock.readLock();
-        private final Lock writeLock = lock.writeLock();
+
+        private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+        private final ReentrantReadWriteLock.ReadLock readLock = lock.readLock();
+        private final ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();
 
         public void inc() {
-            readLock.lock();
+            writeLock.lock();
+            System.out.println(Thread.currentThread().getName() + "- 获得写锁");
+
             try {
                 counts[0] += 1;
                 try {
@@ -63,17 +62,25 @@ public class ReadWriterLockTest {
                 } catch (InterruptedException ignored) {
                 }
                 counts[1] += 1;
+
+                System.out.println(Thread.currentThread().getName() + "- 写入数据" + Arrays.toString(counts));
             } finally {
-                readLock.unlock();
+                writeLock.unlock();
+                System.out.println(Thread.currentThread().getName() + "- 释放写锁");
             }
         }
 
         public int[] get() {
-            writeLock.lock();
+            // 没有读锁的情况下，会导致
+            // 读到 读线程2-读取到数据[45, 44] 这种counts[0] ！= counts[1]的数据
+            readLock.lock();
+            System.out.println(Thread.currentThread().getName() + "- 获得读锁");
+
             try {
                 return Arrays.copyOf(counts, counts.length);
             } finally {
-                writeLock.unlock();
+                readLock.unlock();
+                System.out.println(Thread.currentThread().getName() + "- 释放读锁");
             }
         }
 
