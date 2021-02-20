@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @Description
  * @project springboot_learn
  * @package com.dalaoyang.entity
- * @email yangyang@dalaoyang.cn
+ * @email yangyang@dalaoyang.leetcode.editor.cn
  * @date 2018/5/4
  */
 @Document(indexName = "product_web", type = "sku")

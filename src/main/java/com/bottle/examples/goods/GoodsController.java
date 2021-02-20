@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Description
  * @project springboot_learn
  * @package com.dalaoyang.controller
- * @email yangyang@dalaoyang.cn
+ * @email yangyang@dalaoyang.leetcode.editor.cn
  * @date 2018/5/4
  */
 @Slf4j

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * @Description
  * @project springboot_learn
  * @package com.dalaoyang.repository
- * @email yangyang@dalaoyang.cn
+ * @email yangyang@dalaoyang.leetcode.editor.cn
  * @date 2018/5/4
  */
 @Component
