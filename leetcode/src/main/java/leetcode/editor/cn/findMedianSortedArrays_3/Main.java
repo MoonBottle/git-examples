@@ -1,4 +1,4 @@
-package leetcode.editor.cn.findMedianSortedArrays_3.findSubstring_30;
+package leetcode.editor.cn.findMedianSortedArrays_3;
 
 public class Main {
 
