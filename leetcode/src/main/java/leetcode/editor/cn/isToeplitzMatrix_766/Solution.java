@@ -10,15 +10,11 @@ public class Solution {
         for (int lj = -(m - 1); lj < n; lj++) {
             int i = lj + m - 1;
             int j = 0;
-            int k = matrix[i][0];
-            for (; j < n; j++) {
-                res = k == matrix[i][i + j];
-                j++;
+            int k = matrix[i][j];
+            while (i < m && j < n) {
+                res = k == matrix[i++][j++];
             }
-
         }
-
-
         return res;
     }
 
