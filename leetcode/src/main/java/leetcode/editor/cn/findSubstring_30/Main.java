@@ -1,4 +1,4 @@
-package leetcode.editor.cn.findSubstring_30.lengthOfLongestSubstring;
+package leetcode.editor.cn.findSubstring_30;
 
 public class Main {
 
