@@ -87,6 +87,7 @@ class Solution2 {
     }
 }
 
+
 class ListNode {
     int val;
     ListNode next;
